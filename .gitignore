@@ -8,4 +8,10 @@
 /dataSources.local.xml
 
 node_modules/
-out.js
+dist/
+.env
+.idea/
+.vscode
+.DS_Store
+npm-debug.log
+yarn-error.log
