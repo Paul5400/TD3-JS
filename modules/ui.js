@@ -5,7 +5,7 @@ function displayProduct(product) {
     productDiv.className = "product";
     productDiv.innerHTML = `
         <div class="photo">
-            picto
+            <img src="${product.photo}" alt="${product.ref}" style="width: 100%; height: 100%; object-fit: cover;">
             <a class="product-add2cart">
                 <span class="mdi mdi-cart"></span>
             </a>
