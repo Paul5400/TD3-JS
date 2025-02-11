@@ -6,7 +6,7 @@ body {
 
 main {
 	display: flex;
-	flex-wrap: no-wrap;
+//	flex-wrap: no-wrap;
 }
 
 .bigger {font-size: 1.3rem;}
