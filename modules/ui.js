@@ -4,13 +4,24 @@ function displayProduct(product) {
     const productDiv = document.createElement("div");
     productDiv.className = "product";
     productDiv.innerHTML = `
-        <h3>${product.ref}</h3>
-        <p>${product.description}</p>
-        <p>Prix: ${product.price.toFixed(2)}€</p>
-        <button class="add-to-cart">Ajouter au panier</button>
+        <div class="photo">
+            picto
+            <a class="product-add2cart">
+                <span class="mdi mdi-cart"></span>
+            </a>
+        </div>
+        <div class="details">
+            <div class="details-top">
+                <strong class="bigger">${product.ref}</strong>
+                <strong class="bigger">${product.price.toFixed(2)}€</strong>
+            </div>
+            <div class="details-description">
+                ${product.description}
+            </div>
+        </div>
     `;
 
-    productDiv.querySelector(".add-to-cart").addEventListener("click", () => {
+    productDiv.querySelector(".product-add2cart").addEventListener("click", () => {
         cart.addToCart(product);
         displayCart();
     });
@@ -19,31 +30,37 @@ function displayProduct(product) {
 }
 
 export function buildProductsList(products) {
-    const productsContainer = document.getElementById("products-list");
+    const productsContainer = document.getElementById("product-list");
     productsContainer.innerHTML = "";
     products.forEach(product => productsContainer.appendChild(displayProduct(product)));
 }
 
 export function displayCart() {
-    const cartContainer = document.getElementById("cart");
+    const cartContainer = document.getElementById("cart-content");
     cartContainer.innerHTML = `
-        <h2>Panier</h2>
-        <table>
-            <tr><th>Produit</th><th>Quantité</th><th>Prix</th></tr>
-            ${cart.items.map(item => `
-                <tr>
-                    <td>${item.product.ref}</td>
-                    <td>${item.qty}</td>
-                    <td>${(item.product.price * item.qty).toFixed(2)}€</td>
-                </tr>
-            `).join("")}
-        </table>
-        <p>Total: ${cart.getTotal().toFixed(2)}€</p>
-        <button id="empty-cart">Vider le panier</button>
+        <tr><th>Produit</th><th>Quantité</th><th>Prix</th></tr>
+        ${cart.items.map(item => `
+            <tr>
+                <td>${item.product.ref}</td>
+                <td>${item.qty}</td>
+                <td>${(item.product.price * item.qty).toFixed(2)}€</td>
+            </tr>
+        `).join("")}
     `;
+    document.getElementById("cart-total").textContent = `${cart.getTotal().toFixed(2)} €`;
+    document.getElementById("total-products").textContent = cart.items.length;
 
     document.getElementById("empty-cart").addEventListener("click", () => {
         cart.emptyCart();
         displayCart();
     });
 }
+
+document.getElementById("product-search").addEventListener("input", (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filteredProducts = products.filter(product =>
+        product.ref.toLowerCase().includes(searchTerm) ||
+        product.description.toLowerCase().includes(searchTerm)
+    );
+    buildProductsList(filteredProducts);
+});
